@@ -1,0 +1,19 @@
+# Pings Supabase every 3 days so a free-plan project is never paused for inactivity.
+# Add repo secrets: SUPABASE_URL and SUPABASE_ANON_KEY (Settings → Secrets and variables → Actions)
+name: supabase-keepalive
+on:
+  schedule:
+    - cron: "0 3 */3 * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/rpc/ping" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Content-Type: application/json" -d '{}')
+          echo "HTTP $code"
+          test "$code" = "200"

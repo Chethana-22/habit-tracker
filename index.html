@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#8839ef">
+<title>100 Days of Code(Me) — Habit Tracker</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%238839ef'/%3E%3Crect x='7' y='7' width='8' height='8' rx='2' fill='%23fff'/%3E%3Crect x='17' y='7' width='8' height='8' rx='2' fill='%23d6c2fb'/%3E%3Crect x='7' y='17' width='8' height='8' rx='2' fill='%23d6c2fb'/%3E%3Crect x='17' y='17' width='8' height='8' rx='2' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="win" id="app">
+  <div class="bar">
+    <div class="dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+    <div class="t">habits.py — ~/life/100-days-of-me</div>
+    <div class="acts">
+      <button class="btn" type="button" id="themeBtn">Dark / Light</button>
+      <button class="btn" type="button" id="histBtn" hidden>History</button>
+      <button class="btn" type="button" id="expBtn">Backup</button>
+      <button class="btn" type="button" id="impBtn">Restore</button>
+      <button class="btn" type="button" id="prnBtn">Print</button>
+      <button class="btn" type="button" id="outBtn" hidden>Sign out</button>
+      <input type="file" id="fileIn" accept=".json,application/json" hidden>
+    </div>
+  </div>
+
+  <main>
+    <header>
+      <div>
+        <h1>100 Days of <span class="c">Code</span><span class="p">(</span><span class="m">Me</span><span class="p">)</span></h1>
+        <div class="sub mono"><span class="kw">while</span> day &lt;= <span class="num">100</span>: <span class="fn">show_up</span>() <span class="com">&nbsp;# one commit a day. no force-push on yourself.</span></div>
+      </div>
+      <div class="fields mono">
+        <label>dev = <input id="devIn" placeholder="your name" maxlength="40"></label>
+        <label>start = <input id="startIn" type="date"></label>
+      </div>
+    </header>
+
+    <div class="runbar mono">
+      <label class="com" for="runSel"># run</label>
+      <select id="runSel" aria-label="Select 100-day run"></select>
+      <input id="runTitle" aria-label="Run name" maxlength="40" placeholder="name this run">
+      <button class="btn sm" type="button" id="newRunBtn">+ New run</button>
+      <button class="btn sm danger" type="button" id="delRunBtn">Delete run</button>
+    </div>
+
+    <div class="meta mono">
+      <span class="pill">today = day <b id="dayNo">–</b> / 100</span>
+      <span class="pill">commits = <b id="tot">0</b></span>
+      <span class="pill">perfect days = <b id="perf">0</b></span>
+      <span class="pill">all-time = <b id="allTime">0</b></span>
+      <span class="legend"><span class="com"># intensity&nbsp;</span>skip&nbsp;<i id="l0"></i><i id="l1"></i><i id="l2"></i><i id="l3"></i><i id="l4"></i>&nbsp;ship it</span>
+    </div>
+
+    <div class="grid" id="grid"></div>
+    <div class="help">Click a square to add intensity (1 → 4, then back to empty). Right-click or long-press to clear. Each column = 5 days, top to bottom. Hover a square to see its date.</div>
+  </main>
+
+  <div class="status">
+    <span>main • 0 errors • 0 excuses • <span id="left">100</span> commits to go</span>
+    <span><span id="sync" class="sync">local</span> • Progress &gt; Perfection</span>
+  </div>
+</div>
+
+<!-- Auth -->
+<div class="modal" id="authModal" hidden>
+  <form class="sheet mono" id="authForm" novalidate>
+    <div class="sheet-h"><span class="kw">import</span> account <span class="com"># sign in to sync across devices</span></div>
+    <label>email<input id="email" type="email" autocomplete="email" required></label>
+    <label>password<input id="pass" type="password" autocomplete="current-password" minlength="6" required></label>
+    <div class="msg" id="authMsg" aria-live="polite"></div>
+    <div class="row">
+      <button class="btn primary" type="submit" id="signInBtn">Sign in</button>
+      <button class="btn" type="button" id="signUpBtn">Create account</button>
+    </div>
+    <button class="link" type="button" id="resetBtn">Forgot password?</button>
+  </form>
+</div>
+
+<!-- History -->
+<div class="modal" id="histModal" hidden>
+  <div class="sheet mono">
+    <div class="sheet-h"><span class="kw">git</span> log <span class="com"># automatic snapshots (every ~6h of changes)</span></div>
+    <div id="histList" class="hist"></div>
+    <div class="row"><button class="btn" type="button" id="histClose">Close</button></div>
+  </div>
+</div>
+
+<div class="tip" id="tip"></div>
+<script type="module" src="app.js"></script>
+</body>
+</html>
